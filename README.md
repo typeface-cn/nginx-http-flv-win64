@@ -34,7 +34,7 @@ nginx源码：http://hg.nginx.org/nginx
 3.安装 ActivePerl
 
 # 编译准备 #
-1. 下载 [Nginx](http://hg.nginx.org/nginx/) 、[openssl](https://www.openssl.org/source/)、[pcre](https://ftp.pcre.org/pub/pcre/)、[zlib](http://www.zlib.net/)、[nginx-http-flv-module](https://github.com/winshining/nginx-http-flv-module) 的源码。
+1.下载 [Nginx](http://hg.nginx.org/nginx/) 、[openssl](https://www.openssl.org/source/)、[pcre](https://ftp.pcre.org/pub/pcre/)、[zlib](http://www.zlib.net/)、[nginx-http-flv-module](https://github.com/winshining/nginx-http-flv-module) 的源码。
 
 2.解压 Nginx 源码到 nginx 文件夹；建立 nginx/objs/lib/ 文件夹，将其他源码解压在此处。
 
@@ -52,7 +52,7 @@ nginx源码：http://hg.nginx.org/nginx
 `if exist ms\do_ms.bat`替换为`if exist ms\do_win64a.bat`；
 `ms\do_ms`替换为`ms\do_win64a`。
 
-5.将 `1 <<` 修改为 `1i64 <<`
+将 `1 <<` 修改为 `1i64 <<`
 
 nginx-http-flv-module/ngx_rtmp_flv_module.c(508、521)
 
