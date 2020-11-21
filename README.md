@@ -1,4 +1,4 @@
-# nginx-http-flv-win32
+# nginx-http-flv-win64
 nginx-http-flv-module Windows builds. 
 
 下载地址：https://github.com/aushy/nginx-http-flv-win32/releases
