@@ -17,7 +17,7 @@ nginx源码：http://hg.nginx.org/nginx
 * nginx-rtmp-module https://github.com/arut/nginx-rtmp-module
 
 # 软件准备 #
-1.安装 Visual Studio 2019
+1.安装 Visual Studio 2022
 
 包含单个组件：
 * .NET Framework 4.6.1 目标包
@@ -33,6 +33,8 @@ nginx源码：http://hg.nginx.org/nginx
 
 3.安装 ActivePerl
 
+4.安装 NASM
+
 # 编译准备 #
 1.下载 [Nginx](http://hg.nginx.org/nginx/) 、[openssl](https://www.openssl.org/source/)、[pcre](https://ftp.pcre.org/pub/pcre/)、[zlib](http://www.zlib.net/)、[nginx-http-flv-module](https://github.com/winshining/nginx-http-flv-module) 的源码。
 
@@ -40,10 +42,10 @@ nginx源码：http://hg.nginx.org/nginx
 
 3.修改 /nginx/auto/cc/msvc 文件
 
-因为 MSVC 2019 对应 19.26，在
+因为 MSVC 2022 对应 19.32，在
 `echo " + cl version: $NGX_MSVC_VER"`
 上一行加入一句
-`NGX_MSVC_VER=19.26`
+`NGX_MSVC_VER=19.32`
 
 4.64位编译修改（32位编译忽略）
 
@@ -54,11 +56,11 @@ nginx源码：http://hg.nginx.org/nginx
 
 # 编译 #
 1.在 nginx 文件夹打开命令行，执行
-`"D:/VisualStudio/2019/Community/VC/Auxiliary/Build/vcvarsall.bat" x64`
+`"C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Auxiliary/Build/vcvarsall.bat" x64`
 命令，然后执行
-`"D:/VisualStudio/MSYS2/msys2_shell.cmd" -mingw64 -use-full-path`
+`"D:/exe/msys64/msys2_shell.cmd" -mingw64 -use-full-path`
 命令，在打开的新窗口内执行
-`PATH=/c/Perl64/bin:/d/VisualStudio/2019/Community/VC/Tools/MSVC/14.26.28801/bin/Hostx64/x64:$PATH`命令。
+`PATH=/c/Users/NINGMEI/AppData/Local/bin/NASM:/c/Perl64/bin:"/c/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.32.31326/bin/Hostx64/x64":$PATH`命令。
 
 2.执行
 `cd /d/VisualStudio/code/nginx/`切换到 nginx 文件夹；执行
@@ -74,9 +76,9 @@ nginx源码：http://hg.nginx.org/nginx
 --http-uwsgi-temp-path=temp/uwsgi_temp \
 --with-cc-opt=-DFD_SETSIZE=1024 \
 --with-select_module --with-http_ssl_module \
---with-pcre=objs/lib/pcre-8.44 \
---with-zlib=objs/lib/zlib-1.2.11 \
---with-openssl=objs/lib/openssl-1.1.1g \
+--with-pcre=objs/lib/pcre2-10.40 \
+--with-zlib=objs/lib/zlib-1.2.13 \
+--with-openssl=objs/lib/openssl-1.1.1q \
 --add-module=objs/lib/nginx-http-flv-module
 ```
 进行编译前的配置；执行
