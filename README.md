@@ -6,8 +6,8 @@ nginx-http-flv-module Windows builds.
 nginx源码：http://hg.nginx.org/nginx
 
 /nginx/objs/lib 下放置以下项目：
-* openssl：https://www.openssl.org/source/
-* pcre：https://ftp.pcre.org/pub/pcre/
+* openssl：https://www.openssl.org/source/ ，openssl-1.1.1v 编译时出错，openssl-1.1.1u可以。
+* pcre：https://www.pcre.org/ ，可用PCRE2
 * zlib：http://www.zlib.net/
 * nginx-http-flv-module：https://github.com/winshining/nginx-http-flv-module
 
@@ -50,7 +50,7 @@ nginx源码：http://hg.nginx.org/nginx
 4.64位编译修改（32位编译忽略）
 
 打开.\auto\lib\openssl\makefile.msvc文件。
-找到`VC-WIN32`替换为`VC-WIN64A`；
+找到`perl Configure $(OPENSSL_TARGET) no-shared no-threads`替换为`perl Configure VC-WIN64A no-shared`；
 `if exist ms\do_ms.bat`替换为`if exist ms\do_win64a.bat`；
 `ms\do_ms`替换为`ms\do_win64a`。
 
@@ -76,10 +76,10 @@ nginx源码：http://hg.nginx.org/nginx
 --http-uwsgi-temp-path=temp/uwsgi_temp \
 --with-cc-opt=-DFD_SETSIZE=1024 \
 --with-select_module --with-http_ssl_module \
---with-pcre=objs/lib/pcre2-10.40 \
---with-zlib=objs/lib/zlib-1.2.13 \
---with-openssl=objs/lib/openssl-1.1.1q \
---add-module=objs/lib/nginx-http-flv-module
+--with-pcre=objs/lib/pcre2-10.42 \
+--with-zlib=objs/lib/zlib-1.3 \
+--with-openssl=objs/lib/openssl-1.1.1u \
+--add-module=objs/lib/nginx-http-flv
 ```
 进行编译前的配置；执行
 `nmake -f Makefile`
