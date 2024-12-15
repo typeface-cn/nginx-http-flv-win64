@@ -1,20 +1,21 @@
-# nginx-http-flv-win64
-nginx-http-flv-module Windows builds. 
+# nginx-win64
+nginx Windows builds：nginx-http-flv-module、ngx_http_geoip2_module
 
-下载地址：https://github.com/aushy/nginx-http-flv-win32/releases
+下载地址：https://github.com/aushy/nginx-http-flv-win64/releases
 
 nginx源码：http://hg.nginx.org/nginx
 
 /nginx/objs/lib 下放置以下项目：
-* openssl：https://www.openssl.org/source/ ，openssl-1.1.1v 编译时出错，openssl-1.1.1u可以。
+* openssl：https://www.openssl.org/source/
 * pcre：https://www.pcre.org/ ，可用PCRE2
 * zlib：http://www.zlib.net/
 * nginx-http-flv-module：https://github.com/winshining/nginx-http-flv-module
-
+* ngx_http_geoip2_module https://github.com/leev/ngx_http_geoip2_module
 
 使用方法可参考 
 * nginx http://nginx.org/
 * nginx-rtmp-module https://github.com/arut/nginx-rtmp-module
+* ngx_http_geoip2_module https://github.com/leev/ngx_http_geoip2_module
 
 # 软件准备 #
 1.安装 Visual Studio 2022
@@ -36,7 +37,7 @@ nginx源码：http://hg.nginx.org/nginx
 4.安装 NASM
 
 # 编译准备 #
-1.下载 [Nginx](http://hg.nginx.org/nginx/) 、[openssl](https://www.openssl.org/source/)、[pcre](https://ftp.pcre.org/pub/pcre/)、[zlib](http://www.zlib.net/)、[nginx-http-flv-module](https://github.com/winshining/nginx-http-flv-module) 的源码。
+1.下载 [Nginx](http://hg.nginx.org/nginx/) 、[openssl](https://www.openssl.org/source/)、[pcre](https://ftp.pcre.org/pub/pcre/)、[zlib](http://www.zlib.net/)、[nginx-http-flv-module](https://github.com/winshining/nginx-http-flv-module) 、ngx_http_geoip2_module、[libmaxminddb](https://github.com/maxmind/libmaxminddb)的源码。
 
 2.解压 Nginx 源码到 nginx 文件夹；建立 nginx/objs/lib/ 文件夹，将其他源码解压在此处。
 
@@ -45,7 +46,8 @@ nginx源码：http://hg.nginx.org/nginx
 因为 MSVC 2022 对应 19.32，在
 `echo " + cl version: $NGX_MSVC_VER"`
 上一行加入一句
-`NGX_MSVC_VER=19.32`
+`NGX_MSVC_VER=19.32`，
+这个值几乎没啥用。
 
 4.64位编译修改（32位编译忽略）
 
@@ -62,7 +64,17 @@ nginx源码：http://hg.nginx.org/nginx
 命令，在打开的新窗口内执行
 `PATH=/c/Users/NINGMEI/AppData/Local/bin/NASM:/c/Perl64/bin:"/c/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.32.31326/bin/Hostx64/x64":$PATH`命令。
 
-2.执行
+2.先编译 libmaxminddb，因为 ngx_http_geoip2_module 会用到它
+`cd /d/VisualStudio/code/nginx/objs/lib/libmaxminddb`切换到 libmaxminddb 文件夹；执行
+```
+$ mkdir build && cd build
+$ cmake ..
+$ cmake --build .
+$ ctest -V .
+$ cmake --build . --target install
+```
+
+3.配置编译参数
 `cd /d/VisualStudio/code/nginx/`切换到 nginx 文件夹；执行
 ```
 ./auto/configure \
@@ -85,12 +97,17 @@ nginx源码：http://hg.nginx.org/nginx
 --with-stream --with-stream_realip_module --with-stream_ssl_preread_module \
 --with-openssl-opt='no-asm no-tests -D_WIN32_WINNT=0x0501' \
 --with-http_ssl_module --with-mail_ssl_module --with-stream_ssl_module \
---with-pcre=objs.msvc8/lib/pcre2-10.42 \
---with-zlib=objs.msvc8/lib/zlib-1.3 \
---with-openssl=objs.msvc8/lib/openssl-3.0.10 \
---add-module=objs.msvc8/lib/nginx-http-flv-module
+--with-pcre=objs/lib/pcre2-10.44 \
+--with-zlib=objs/lib/zlib-1.3.1 \
+--with-openssl=objs/lib/openssl-3.4.0 \
+--add-module=objs/lib/nginx-http-flv-module \
+--with-ld-opt="objs/lib/libmaxminddb/lib/maxminddb.lib" \
+--with-cc-opt="-Iobjs/lib/libmaxminddb/include" \
+--add-module=objs/lib/ngx_http_geoip2_module
 ```
-进行编译前的配置；执行
+修改 nginx/objs.msvc8/Makefile 的内容：删除第3行内的 -WX
+
+4.编译. 执行
 `nmake -f Makefile`
 开始编译。
 
